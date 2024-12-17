@@ -25,17 +25,16 @@
             margin: 10px 0;
         }
         .button {
-            background-color: #6c757d; /* Cor cinza */
+            background-color: #808080; /* Cinza bonito */
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
             margin-top: 20px;
-            border-radius: 5px;
-            font-size: 16px;
+            width: 100%;
         }
         .button:hover {
-            background-color: #5a6268; /* Cor cinza escuro */
+            background-color: #666666;
         }
     </style>
 </head>
@@ -48,7 +47,7 @@
     <div id="question-container">
         <!-- Perguntas serão inseridas aqui -->
     </div>
-    <button class="button" onclick="nextQuestion()">Iniciar o Teste</button>
+    <button class="button" onclick="startGame()">Iniciar o Teste</button>
 </div>
 
 <script>
@@ -86,19 +85,24 @@
 
     let currentQuestion = 0;
 
-    // Função para embaralhar as opções
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]]; // Troca de elementos
+            [array[i], array[j]] = [array[j], array[i]]; // Troca os elementos
         }
+    }
+
+    function startGame() {
+        // Remove o botão "Iniciar o Teste" após começar
+        document.querySelector("button").style.display = "none";
+        displayQuestion();
     }
 
     function displayQuestion() {
         const questionData = questions[currentQuestion];
         const questionContainer = document.getElementById("question-container");
         
-        // Embaralhar as opções antes de exibir
+        // Embaralha as opções
         shuffleArray(questionData.options);
 
         let optionsHTML = "";
@@ -156,10 +160,6 @@
         answers.Kol = 0;
         answers.Freya = 0;
         currentQuestion = 0;
-        displayQuestion();
-    }
-
-    function nextQuestion() {
         displayQuestion();
     }
 </script>
