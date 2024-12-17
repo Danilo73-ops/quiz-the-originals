@@ -4,11 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minigame - The Originals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f4f6;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Minigame "The Originals"!</h1>
-    <p>Descubra qual personagem da série "The Originals" você seria!</p>
-    <a href="https://replit.com/@seu_usuario/minigame" target="_blank">Clique aqui para jogar o Minigame</a>
-    <p>Se o link não funcionar, copie e cole no seu navegador.</p>
+
+<h1>Bem-vindo ao Minigame "The Originals"!</h1>
+<p>Descubra qual personagem da série "The Originals" você seria!</p>
+
+<div id="game-container">
+    <div id="question-container">
+        <!-- Perguntas serão inseridas aqui -->
+    </div>
+    <button class="button" onclick="nextQuestion()">Iniciar o Teste</button>
+</div>
+
+<script>
+    // Dados do jogo
+    const questions = [
+        {
+            question: "Como você lidaria com um grande perigo para sua família?",
+            options: ["Enfrentaria com tudo, sem medo.", "Tentaria resolver de forma estratégica.", "Protegeria a todos a qualquer custo.", "Usaria uma abordagem mais imprevisível.", "Tentaria encontrar uma solução mágica."]
+        },
+        {
+            question: "Qual é a sua maior prioridade na vida?",
+            options: ["Poder e vingança.", "Família e honra.", "Amor e liberdade.", "Diversão e caos.", "Proteção e equilíbrio."]
+        },
+        {
+            question: "O que você faria se tivesse que escolher entre salvar um amigo e sua família?",
+            options: ["Salvaria a minha família, sem pensar.", "Tentaria salvar os dois, mas priorizaria a família.", "Tentaria salvar todos, custe o que custar.", "Tomaria uma decisão impulsiva sem pensar muito.", "Usaria magia para salvar os dois."]
+        },
+        {
+            question: "Como você se sentiria se alguém ameaçasse alguém que ama?",
+            options: ["Furia total.", "Tentaria resolver com calma e racionalidade.", "Defensiva, faria qualquer coisa para proteger.", "Provocaria e desafiaria a pessoa.", "Usaria seus poderes para impedir qualquer ameaça."]
+        },
+        {
+            question: "O que você acha do amor?",
+            options: ["O amor é uma fraqueza, mas não posso fugir dele.", "O amor é uma força poderosa que deve ser respeitada.", "O amor é tudo que importa, mesmo que eu tenha que sacrificar por ele.", "O amor é divertido, mas não é prioridade.", "O amor pode ser tanto uma benção quanto uma maldição, dependendo de como você o usa."]
+        }
+    ];
+
+    const answers = {
+        Klaus: 0,
+        Elijah: 0,
+        Rebekah: 0,
+        Kol: 0,
+        Freya: 0
+    };
+
+    let currentQuestion = 0;
+
+    function displayQuestion() {
+        const questionData = questions[currentQuestion];
+        const questionContainer = document.getElementById("question-container");
+        
+        let optionsHTML = "";
+        questionData.options.forEach((option, index) => {
+            optionsHTML += `<li><button class="button" onclick="answerQuestion(${index})">${option}</button></li>`;
+        });
+
+        questionContainer.innerHTML = `
+            <div class="question">
+                <h2>${questionData.question}</h2>
+                <ul class="options">${optionsHTML}</ul>
+            </div>
+        `;
+    }
+
+    function answerQuestion(selectedIndex) {
+        const questionData = questions[currentQuestion];
+
+        // Definir quem é o personagem baseado na escolha
+        const characters = ["Klaus", "Elijah", "Rebekah", "Kol", "Freya"];
+        const characterIndex = selectedIndex;
+
+        answers[characters[characterIndex]]++;
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            displayQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        let highestScore = -1;
+        let character = "";
+
+        for (const char in answers) {
+            if (answers[char] > highestScore) {
+                highestScore = answers[char];
+                character = char;
+            }
+        }
+
+        document.getElementById("game-container").innerHTML = `
+            <h2>Você seria o personagem: ${character}!</h2>
+            <button class="button" onclick="restartGame()">Jogar novamente</button>
+        `;
+    }
+
+    function restartGame() {
+        answers.Klaus = 0;
+        answers.Elijah = 0;
+        answers.Rebekah = 0;
+        answers.Kol = 0;
+        answers.Freya = 0;
+        currentQuestion = 0;
+        displayQuestion();
+    }
+
+    function nextQuestion() {
+        displayQuestion();
+    }
+</script>
+
 </body>
 </html>
