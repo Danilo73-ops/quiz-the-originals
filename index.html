@@ -25,15 +25,17 @@
             margin: 10px 0;
         }
         .button {
-            background-color: #4CAF50;
+            background-color: #6c757d; /* Cor cinza */
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
             margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
         }
         .button:hover {
-            background-color: #45a049;
+            background-color: #5a6268; /* Cor cinza escuro */
         }
     </style>
 </head>
@@ -84,10 +86,21 @@
 
     let currentQuestion = 0;
 
+    // Função para embaralhar as opções
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Troca de elementos
+        }
+    }
+
     function displayQuestion() {
         const questionData = questions[currentQuestion];
         const questionContainer = document.getElementById("question-container");
         
+        // Embaralhar as opções antes de exibir
+        shuffleArray(questionData.options);
+
         let optionsHTML = "";
         questionData.options.forEach((option, index) => {
             optionsHTML += `<li><button class="button" onclick="answerQuestion(${index})">${option}</button></li>`;
